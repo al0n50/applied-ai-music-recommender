@@ -1,10 +1,15 @@
-# 🎵 Music Recommender Simulation
+# 🎵 Music Recommender Simulation (VibeFinder 1.0)
 
 ## Project Summary
 
 In this project, I built **VibeFinder 1.0**, a content-based music recommender simulation. It transforms a user's musical taste profile (genre, mood, energy, and acousticness) into a personalized playlist by calculating mathematical similarity scores against a custom catalog of 15 songs. 
 
-The project highlights both how explicit scoring rules can successfully surface relevant tracks, and how arbitrary point weights can easily introduce "filter bubbles" and bias into an AI system.
+For the final phase of this project, I engineered an **AI Guardrail & Confidence Scoring System** to wrap around the base recommendation logic. The project highlights both how explicit scoring rules can successfully surface relevant tracks, and how reliability wrappers are essential to prevent edge cases from breaking an AI system.
+
+### 🏗️ System Architecture
+*(The visual data flow of the recommendation engine and reliability guardrails)*
+
+![System Architecture](assets/system_architecture.png)
 
 ---
 
@@ -25,7 +30,16 @@ The Recommender loops through the CSV catalog and calculates a numeric score for
 * **Energy Match:** Up to +1.0 point. Calculated using the formula `1.0 - abs(target_energy - song_energy)`.
 * **Acousticness Match:** Up to +1.0 point. Calculated using the formula `1.0 - abs(target_acousticness - song_acousticness)`.
 
-**The Ranking Rule:** Once every song is scored, the system sorts the catalog in descending order based on those scores. The top K songs (e.g., the top 3 or 5) are then selected and returned as the final recommendations.
+**The Ranking Rule:** Once every song is scored, the system sorts the catalog in descending order based on those scores. The top K songs (e.g., the top 2 or 3) are then selected and returned as the final recommendations.
+
+---
+
+## 🛡️ Reliability & AI Guardrails
+
+To ensure the system acts like a production-ready application, I implemented Site Reliability Operations techniques:
+1. **Input Guardrails:** Before the recommender touches the data, an intercept function verifies the data integrity. If a profile is missing required keys or contains mathematically impossible parameters (like an energy level above 1.0), the request is blocked.
+2. **Confidence Scoring:** The system evaluates the final math. If a returned song scores below a 2.5, it triggers a "Low Confidence" warning to the user, preventing the system from hallucinating a "good match" when the database lacks appropriate tracks.
+3. **Automated Logging:** All successful initializations, guardrail blocks, and low-confidence warnings are silently tracked in a `recommender_system.log` file.
 
 ---
 
@@ -34,7 +48,6 @@ The Recommender loops through the CSV catalog and calculates a numeric score for
 ### Setup
 
 1. Create a virtual environment (optional but recommended):
-
    ```bash
    python -m venv .venv
    source .venv/bin/activate      # Mac or Linux
