@@ -1,0 +1,7 @@
+2026-04-29 10:56:36,194 - INFO - System initialized successfully. Catalog loaded.
+2026-04-29 10:56:36,195 - INFO - Processing profile: Studio Ghibli Relaxer
+2026-04-29 10:56:36,196 - WARNING - Low confidence recommendation served to Studio Ghibli Relaxer: 'Spacewalk Thoughts'
+2026-04-29 10:56:36,198 - INFO - Processing profile: Night Drive ModLog Coder
+2026-04-29 10:56:36,200 - WARNING - Low confidence recommendation served to Night Drive ModLog Coder: 'Sunrise City'
+2026-04-29 10:56:36,201 - INFO - Processing profile: Corrupted Edge Case (Adversarial)
+2026-04-29 10:56:36,201 - ERROR - Guardrail triggered for 'Corrupted Edge Case (Adversarial)': Missing parameter 'favorite_mood'
